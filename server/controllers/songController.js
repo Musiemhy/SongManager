@@ -1,4 +1,6 @@
+import { uploadImageCDN } from "../contentDeliveryNetwork.js";
 import { Song } from "../models/songModels.js";
+//cdn controllers
 
 export const addSong = async (request, response) => {
   try {
@@ -10,14 +12,17 @@ export const addSong = async (request, response) => {
       genre,
       releaseDate,
       duration,
-      coverImage,
+      coverImages,
     } = request.body;
 
-    if (!User || !title || !artist || !genre || !duration || !coverImage) {
-      return response
-        .status(400)
-        .send({ message: "Please fill all required fields!" });
+    if (!User || !title || !artist || !genre || !duration || !coverImages) {
+      const err = new Error("Please fill all required fields!");
+      err.name = "CustomError";
+      throw err;
     }
+
+    const optimizedImg = await uploadImageCDN(coverImages);
+    const coverImage = optimizedImg.optimizeImgUrl;
 
     const newSong = {
       User,
@@ -32,15 +37,19 @@ export const addSong = async (request, response) => {
     const song = await Song.create(newSong);
 
     if (!song) {
-      return response.status(404).send({
-        message: "Couldn't add song!",
-      });
+      const err = new Error("Couldn't add song!");
+      err.name = "CustomError";
+      throw err;
     }
 
     return response.status(201).send({ message: "Song added successfully!" });
   } catch (error) {
-    console.error(error);
-    response.status(500).send({ message: error.message });
+    if (error.name === "CustomError") {
+      response.status(400).send({ message: error.message });
+    } else {
+      console.error(error);
+      response.status(500).send({ message: error.message });
+    }
   }
 };
 
