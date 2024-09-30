@@ -39,7 +39,7 @@ export const addUser = async (request, response) => {
   }
 };
 
-export const getUserByEmailAndPassword = async (req, res) => {
+export const getUserByNameAndPassword = async (req, res) => {
   try {
     const { name, password } = req.body;
 

@@ -1,5 +1,6 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Dropdown from "./Dropdown";
 import {
   HeaderContainer,
   OtherPages,
@@ -8,6 +9,12 @@ import {
 } from "../styles";
 
 const Header = () => {
+  const [isClicked, setIsClicked] = useState(false);
+
+  const toggleClick = () => {
+    setIsClicked(!isClicked);
+  };
+
   return (
     <HeaderContainer>
       <OtherPages>
@@ -22,9 +29,23 @@ const Header = () => {
         </StyledLink>
       </OtherPages>
       <div>
-        <Link to="/login">
-          <LoginButton>Login</LoginButton>
-        </Link>
+        {localStorage.getItem("name") ? (
+          <div className="profile">
+            <LoginButton onClick={toggleClick}>
+              {localStorage.getItem("name")}
+            </LoginButton>
+            <div
+              className="profile-detail"
+              style={{ display: isClicked ? "inline" : "none" }}
+            >
+              <Dropdown />
+            </div>
+          </div>
+        ) : (
+          <Link to="/login">
+            <LoginButton>Login</LoginButton>
+          </Link>
+        )}
       </div>
     </HeaderContainer>
   );

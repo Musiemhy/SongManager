@@ -121,6 +121,59 @@ export const LoginButton = styled.button`
   }
 `;
 
+//style for the dropdown menu in the header
+export const DropdownCard = styled.div`
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(
+    to bottom,
+    #add8e6,
+    #c6e0f0,
+    #dee9f7,
+    #f1f3fb,
+    #ffffff
+  );
+  overflow: hidden;
+`;
+export const DropdownUnorderedList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+export const DropdownList = styled.li`
+  border-bottom: 1px solid #ddd;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+export const DropdownBtn = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: #f5f5dc;
+    color: lightblue;
+  }
+`;
+export const DropdownIcon = styled.svg`
+  margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  stroke: #333;
+  fill: none;
+`;
+
 // Hero Section Styles
 export const HeroContainer = styled.section`
   display: flex;
@@ -244,6 +297,87 @@ export const Artist_Genre_Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+//style for register and login pages
+export const Register_Login_Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+`;
+export const Register_Login_Image = styled.div`
+  flex-basis: 50%;
+  background-image: url(../../songArtist.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  margin: 0;
+`;
+export const Register_Login_Data = styled.div`
+  flex-basis: 50%;
+  display: flex;
+  gap: 25px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  box-sizing: border-box;
+`;
+export const Register_Login_Links = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+  justify-content: flex-end;
+  width: 100%;
+  margin-right: 5%;
+`;
+export const Register_Login_title = styled.div`
+  margin-bottom: 2%;
+  font-size: 1.5rem;
+`;
+export const Register_Login_desc = styled.span`
+  color: #e56d4b;
+  text-decoration: underline;
+  font-size: 0.9rem;
+`;
+export const Register_Login_Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`;
+export const Register_Login_Foritem = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+export const Register_Login_Formlabel = styled.label`
+  font-weight: 900;
+  display: block;
+  margin-bottom: 2%;
+`;
+export const Register_Login_Forminput = styled.input`
+  padding: 10px 40px;
+  margin-bottom: 5%;
+  text-align: center;
+  border: 1px solid #5d4037;
+  border-radius: 5px;
+  width: 80%;
+`;
+export const Register_Login_Formtoggle = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #e56d4b;
+  padding: 0px;
+  margin: 0px;
+`;
+export const Register_Login_Formerror = styled.div`
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 0.9rem;
 `;
 
 //style for card lists in list page and others
