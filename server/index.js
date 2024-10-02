@@ -19,6 +19,14 @@ app.use(
 
 app.use(cors());
 
+app.use(
+  cors({
+    origin: "https://song-manager-pi.vercel.app",
+    methods: "GET, POST, PUT, DELETE",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 const testmongosconnection = async () => {
