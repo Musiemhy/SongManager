@@ -9,8 +9,7 @@ import bodyParser from "body-parser";
 
 const app = express();
 
-// Middlewares
-app.use(bodyParser.json({ limit: "20mb" })); //to controle Parse incoming request bodies(eg size,default was 100kb)
+app.use(bodyParser.json({ limit: "20mb" }));
 app.use(
   bodyParser.urlencoded({
     limit: "20mb",

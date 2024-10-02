@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   loggedIn: false,
+  registered: false,
 };
 
 const authSlice = createSlice({
@@ -19,6 +20,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.user = action.payload;
       state.loggedIn = false;
+      state.registered = true;
     },
     registerFail: (state, action) => {
       state.loading = false;
@@ -32,6 +34,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.user = action.payload;
       state.loggedIn = true;
+      state.registered = false;
     },
     loginFail: (state, action) => {
       state.loading = false;
@@ -42,8 +45,10 @@ const authSlice = createSlice({
       state.error = null;
     },
     logout: (state) => {
-      state.user = null;
+      state.loading = false;
       state.loggedIn = false;
+      state.registered = false;
+      state.error = null;
     },
   },
 });

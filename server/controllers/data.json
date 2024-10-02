@@ -1,0 +1,112 @@
+{
+  "songs": [
+    {
+      "title": "P.Y.T. (Pretty Young Thing)",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "Disco",
+      "releaseDate": "09/19/1983",
+      "duration": "359",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/P.Y.T._(Pretty_Young_Thing).jpg"
+    },
+    {
+      "title": "Human Nature",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "R&B",
+      "releaseDate": "07/4/1983",
+      "duration": "406",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/Mjhm.jpg"
+    },
+    {
+      "title": "Wanna Be Startin' Somethin",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "Disco",
+      "releaseDate": "05/9/1983",
+      "duration": "603",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/Michael-jackson-wanna-be-startin-somethin-epic-us-vinyl-seven-inch.jpg"
+    },
+    {
+      "title": "Beat It",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "Hard rock",
+      "releaseDate": "02/14/1983",
+      "duration": "418",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/Beat_It.jpg"
+    },
+    {
+      "title": "Billie Jean",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "Pop",
+      "releaseDate": "01/3/1983",
+      "duration": "457",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/Billie_Jean_US_7-inch_vinyl_Side-A.jpg"
+    },
+    {
+      "title": "The Girl Is Mine",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "Pop",
+      "releaseDate": "10/18/1982",
+      "duration": "342",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/The_girl_is_mine.jpg"
+    },
+    {
+      "title": "Thriller",
+      "artist": "Michael Jackson",
+      "album": "Thriller",
+      "genre": "Disco",
+      "releaseDate": "11/11/1983",
+      "duration": "557",
+      "coverImage": "/Sample_Defualt_Songs/Thriller/Michael_jackson_thriller_12_inch_single_USA.jpg"
+    },
+    {
+      "title": "One Love",
+      "artist": "Bob Marley and the Wailers",
+      "album": "Exodus",
+      "genre": "Reggae",
+      "releaseDate": "04/16/1984",
+      "duration": "254",
+      "coverImage": "/Sample_Defualt_Songs/Exodus/one_love.jfif"
+    },
+    {
+      "title": "Three Little Birds",
+      "artist": "Bob Marley and the Wailers",
+      "album": "Exodus",
+      "genre": "Reggae",
+      "releaseDate": "08/29/1980",
+      "duration": "301",
+      "coverImage": "/Sample_Defualt_Songs/Exodus/Bob_Marley_Three_Little_Birds.jpg"
+    },
+    {
+      "title": "Jamming",
+      "artist": "Bob Marley and the Wailers",
+      "album": "Exodus",
+      "genre": "Reggae",
+      "releaseDate": "06/3/1977",
+      "duration": "331",
+      "coverImage": "/Sample_Defualt_Songs/Exodus/Jamming_-_single_cover.jpg"
+    },
+    {
+      "title": "Waiting in Vain",
+      "artist": "Bob Marley and the Wailers",
+      "album": "Exodus",
+      "genre": "Reggae",
+      "releaseDate": "04/23/1977",
+      "duration": "415",
+      "coverImage": "/Sample_Defualt_Songs/Exodus/WaitingInVain.jpg"
+    },
+    {
+      "title": "Exodus",
+      "artist": "Bob Marley and the Wailers",
+      "album": "Exodus",
+      "genre": "Reggae",
+      "releaseDate": "11/11/1977",
+      "duration": "740",
+      "coverImage": "/Sample_Defualt_Songs/Exodus/Bob_Marley_and_the_Wailers_-_Exodus.png"
+    }
+  ]
+}

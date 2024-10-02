@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginStart } from "../redux/authRedux/authSlice";
+import { loginStart, logout } from "../redux/authRedux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Register_Login_Container,
@@ -39,19 +39,29 @@ const LoginPage = () => {
 
   const formSubmission = (e) => {
     e.preventDefault();
+    if (!inputs.name || !inputs.password) {
+      alert("Please fill in both fields.");
+      return;
+    }
     dispatch(loginStart(inputs));
   };
 
   useEffect(() => {
     if (loggedIn) {
-      alert("You have sucessfuly logged in, being redirected to Dashboard!");
+      alert("You have successfully logged in, being redirected to Dashboard!");
       navigate("/listpage");
     }
   }, [loggedIn, navigate]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(logout());
+    };
+  }, [dispatch]);
+
   return (
     <Register_Login_Container>
-      <Register_Login_Image></Register_Login_Image>
+      <Register_Login_Image />
       <Register_Login_Data>
         <Register_Login_Links>
           <Link to="/register">
@@ -79,6 +89,8 @@ const LoginPage = () => {
                 id="name"
                 value={inputs.name}
                 onChange={handleChange}
+                required
+                aria-describedby="nameHelp"
               />
             </div>
             <div>
@@ -86,7 +98,10 @@ const LoginPage = () => {
                 <Register_Login_Formlabel htmlFor="password">
                   Password:
                 </Register_Login_Formlabel>
-                <Register_Login_Formtoggle onClick={togglePasswordVisibility}>
+                <Register_Login_Formtoggle
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
                   {passwordVisibility ? "Show" : "Hide"}
                 </Register_Login_Formtoggle>
               </Register_Login_Foritem>
@@ -96,13 +111,17 @@ const LoginPage = () => {
                 id="password"
                 value={inputs.password}
                 onChange={handleChange}
+                required
+                aria-describedby="passwordHelp"
               />
             </div>
             <LoginButton type="submit" disabled={loading}>
-              Login
+              {loading ? "Logging in..." : "Login"}
             </LoginButton>
             {error && (
-              <Register_Login_Formerror>{error}</Register_Login_Formerror>
+              <Register_Login_Formerror role="alert">
+                {error}
+              </Register_Login_Formerror>
             )}
           </Register_Login_Form>
         </form>

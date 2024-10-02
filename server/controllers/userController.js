@@ -1,4 +1,17 @@
+import { Song } from "../models/songModels.js";
 import { User } from "../models/userModels.js";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import fs from "fs";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export const readSongsData = () => {
+  const songsDataPath = join(__dirname, "data.json");
+  const songsData = JSON.parse(fs.readFileSync(songsDataPath, "utf-8"));
+  return songsData;
+};
 
 export const addUser = async (request, response) => {
   try {
@@ -20,21 +33,26 @@ export const addUser = async (request, response) => {
         .send({ message: "User already exists with this name!" });
     }
 
-    const newUser = {
-      name,
-      password,
-    };
+    const newUser = { name, password };
     const user = await User.create(newUser);
 
     if (!user) {
-      return response.status(404).send({
-        message: "Couldn't add user!",
-      });
+      return response.status(404).send({ message: "Couldn't add user!" });
     }
 
-    return response.status(201).send({ message: "registered" });
+    const songsData = readSongsData();
+    const songsToAdd = songsData.songs.map((song) => ({
+      ...song,
+      User: user._id,
+    }));
+
+    await Song.insertMany(songsToAdd);
+
+    return response
+      .status(201)
+      .send({ message: "User registered and songs added successfully!" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     response.status(500).send({ message: error.message });
   }
 };

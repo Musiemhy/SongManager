@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { registerStart } from "../redux/authRedux/authSlice";
+import { registerStart, logout } from "../redux/authRedux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Register_Login_Container,
@@ -23,8 +23,9 @@ const RegisterPage = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
     useState(true);
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
-  const { loading, error, user } = useSelector((state) => state.auth);
+  const { loading, error, registered } = useSelector((state) => state.auth);
 
   const [inputs, setInputs] = useState({
     name: "",
@@ -42,13 +43,65 @@ const RegisterPage = () => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
+  const validatePassword = (password) => {
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) {
+      return "Password must be at least 8 characters long.";
+    }
+    if (!hasUppercase) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!hasLowercase) {
+      return "Password must contain at least one lowercase letter.";
+    }
+    if (!hasNumber) {
+      return "Password must contain at least one number.";
+    }
+    if (!hasSpecialChar) {
+      return "Password must contain at least one special character.";
+    }
+    return "";
+  };
+
   const formSubmission = (e) => {
     e.preventDefault();
-    dispatch(registerStart(inputs));
+    if (!inputs.name || !inputs.password || !inputs.confirm_password) {
+      alert("Please fill in all fields.");
+      return;
+    }
 
-    alert("You have sucessfuly registered, being redirected to login!");
-    navigate("/login");
+    const passwordValidationError = validatePassword(inputs.password);
+    if (passwordValidationError) {
+      setPasswordError(passwordValidationError);
+      return;
+    }
+
+    if (inputs.password !== inputs.confirm_password) {
+      setPasswordError("Passwords do not match.");
+      return;
+    }
+
+    setPasswordError("");
+    dispatch(registerStart(inputs));
   };
+
+  useEffect(() => {
+    if (registered) {
+      alert("Registration successful! Redirecting to login...");
+      navigate("/login");
+    }
+  }, [registered, navigate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(logout());
+    };
+  }, [dispatch]);
 
   return (
     <Register_Login_Container>
@@ -78,6 +131,7 @@ const RegisterPage = () => {
                 type="text"
                 name="name"
                 id="name"
+                required
                 value={inputs.name}
                 onChange={handleChange}
               />
@@ -87,7 +141,10 @@ const RegisterPage = () => {
                 <Register_Login_Formlabel htmlFor="password">
                   Password:
                 </Register_Login_Formlabel>
-                <Register_Login_Formtoggle onClick={togglePasswordVisibility}>
+                <Register_Login_Formtoggle
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                >
                   {passwordVisibility ? "Show" : "Hide"}
                 </Register_Login_Formtoggle>
               </Register_Login_Foritem>
@@ -95,6 +152,7 @@ const RegisterPage = () => {
                 type={passwordVisibility ? "password" : "text"}
                 name="password"
                 id="password"
+                required
                 value={inputs.password}
                 onChange={handleChange}
               />
@@ -105,6 +163,7 @@ const RegisterPage = () => {
                   Confirm Password:
                 </Register_Login_Formlabel>
                 <Register_Login_Formtoggle
+                  type="button"
                   onClick={toggleConfirmPasswordVisibility}
                 >
                   {confirmPasswordVisibility ? "Show" : "Hide"}
@@ -114,10 +173,16 @@ const RegisterPage = () => {
                 type={confirmPasswordVisibility ? "password" : "text"}
                 name="confirm_password"
                 id="confirm_password"
+                required
                 value={inputs.confirm_password}
                 onChange={handleChange}
               />
             </div>
+            {passwordError && (
+              <Register_Login_Formerror role="alert">
+                {passwordError}
+              </Register_Login_Formerror>
+            )}
             <LoginButton type="submit" disabled={loading}>
               Register
             </LoginButton>
