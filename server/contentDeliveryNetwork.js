@@ -47,30 +47,34 @@ export const deleteImageCDN = async (imagePublicID) => {
     const options = {
       resource_type: "image",
     };
+
     try {
-      await cloudinary.uploader
-        .destroy(imagePublicID, options)
-        .then((result) => {
-          console.log("DeleteCDN:" + JSON.stringify(result));
-          //
-          // if (result === "not found") {
-          //   const err = new Error("CDN Image not found");
-          //   err.statuscode = 400;
-          //   throw err;
-          // }
-          //
-        });
+      const result = await cloudinary.uploader.destroy(imagePublicID, options);
+
+      console.log("DeleteCDN Result:", result);
+
+      if (result.result === "ok") {
+        console.log(`Successfully deleted image with ID: ${imagePublicID}`);
+      } else {
+        console.error(`Failed to delete image: ${result.result}`);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Error deleting image:", err);
       throw err;
     }
+  } else {
+    console.warn("No imagePublicID provided for deletion.");
   }
 };
 
 export const updaterImageCDN = async (imagePublicId, imagePath) => {
   try {
-    console.log(imagePublicId);
-    await deleteImageCDN(imagePublicId);
+    const publicId = await extractPublicId(imagePublicId);
+
+    console.log("URL: ", imagePublicId);
+    console.log("PublicId: ", publicId);
+
+    await deleteImageCDN(publicId);
     const result = await uploadImageCDN(imagePath);
 
     return {
@@ -81,4 +85,16 @@ export const updaterImageCDN = async (imagePublicId, imagePath) => {
   } catch (error) {
     throw new Error("Cannot update image. Please try again.");
   }
+};
+
+export const extractPublicId = (cloudinaryUrl) => {
+  const regex = /\/upload\/(?:[^\/]*\/)*(.*?)(?=\?|$)/;
+  const match = cloudinaryUrl.match(regex);
+
+  if (match && match[1]) {
+    const publicId = "SongManger/CoverImg/" + match[1];
+    return publicId;
+  }
+
+  return null;
 };

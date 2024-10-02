@@ -1,15 +1,29 @@
 import styled from "@emotion/styled";
-import { space, layout, flexbox, style } from "styled-system";
+import { space, flexbox } from "styled-system";
 import { keyframes } from "@emotion/react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-// this is style for card
+// this is style for card and cardItem
 export const CardItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #f9f9f9;
   height: 100%;
 `;
+export const CardContainer = styled.div`
+  width: 100%;
+  min-width: 150px;
+  max-width: 300px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 
+  &:hover {
+    transform: scale(1.04) rotate(-1deg);
+  }
+`;
 export const CardName = styled.div`
   font-weight: bolder;
   font-size: larger;
@@ -19,8 +33,22 @@ export const CardName = styled.div`
   justify-content: center;
   padding: 15px;
 `;
-
 export const CardImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  transition: 0.3s ease-in-out;
+
+  // Blur effect on hover
+  ${CardContainer}:hover & {
+    filter: blur(5px);
+  }
+`;
+export const CardIcon = styled.img`
   flex-basis: 90%;
   width: 100%;
   height: auto;
@@ -29,8 +57,6 @@ export const CardImage = styled.img`
   transition: 0.2s ease-in-out;
   z-index: 1;
 `;
-
-// this is style for cardItem
 const anim = keyframes`
   0% {
     transform: translateY(0);
@@ -43,50 +69,36 @@ const anim = keyframes`
   }
 `;
 export const CardText = styled.div`
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  transition: 0.2s ease-in-out;
-  z-index: 2;
-`;
-
-export const CardContainer = styled.div`
-  width: 100%;
-  height: auto;
-  min-width: 150px;
-  max-width: 300px;
-  min-height: 250px;
-  max-height: 350px;
-  background: url(${(props) => props.image}) center/cover no-repeat;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  color: white;
-  transition: 0.2s ease-in-out;
   position: relative;
-  cursor: pointer;
-  overflow: hidden;
+  z-index: 2;
+  opacity: 0;
+  text-align: center;
+  padding: 15px;
+  color: white;
+  transition: opacity 0.3s ease-in-out;
 
-  &:hover {
-    transform: scale(1.04) rotate(-1deg);
-    background-size: cover;
-  }
-
-  &:hover ${CardText} {
+  ${CardContainer}:hover & {
     opacity: 1;
   }
 `;
-
-export const CardTitle = styled.h3``;
-export const CardArtist = styled.h3``;
-export const CardAlbum = styled.h5``;
-export const CardGenre = styled.h3``;
-export const CardReleaseDate = styled.p``;
-export const CardDuration = styled.p``;
+export const CardTitle = styled.h5`
+  margin: 5px 0;
+`;
+export const CardArtist = styled.h5`
+  margin: 5px 0;
+`;
+export const CardAlbum = styled.p`
+  margin: 5px 0;
+`;
+export const CardGenre = styled.p`
+  margin: 5px 0;
+`;
+export const CardReleaseDate = styled.p`
+  margin: 5px 0;
+`;
+export const CardDuration = styled.p`
+  margin: 5px 0;
+`;
 
 //both HeaderContainer and OtherPages are styles specific for header page
 export const HeaderContainer = styled.div`
@@ -98,14 +110,12 @@ export const HeaderContainer = styled.div`
 export const OtherPages = styled.div`
   ${space};
 `;
-
 //style for all links
 export const StyledLink = styled.a`
   margin-left: 15px;
   text-decoration: none;
   color: inherit;
 `;
-
 //style for all login button
 export const LoginButton = styled.button`
   padding: 10px 20px;
@@ -120,7 +130,6 @@ export const LoginButton = styled.button`
     background-color: #2980b9;
   }
 `;
-
 //style for the dropdown menu in the header
 export const DropdownCard = styled.div`
   border: 1px solid #ccc;
@@ -185,24 +194,20 @@ export const HeroContainer = styled.section`
   background-position: center;
   color: #f9f9f9;
 `;
-
 export const HeroContent = styled.div`
   text-align: center;
   max-width: 800px;
   padding: 20px;
 `;
-
 export const HeroTitle = styled.h1`
   font-size: 3rem;
   margin-bottom: 20px;
   font-weight: bold;
 `;
-
 export const HeroSubtitle = styled.p`
   font-size: 1.5rem;
   margin-bottom: 30px;
 `;
-
 //style for all primary cta button
 export const CTAButton = styled.button`
   padding: 15px 30px;
@@ -219,7 +224,6 @@ export const CTAButton = styled.button`
     background-color: ${(props) => (props.primary ? "#2980b9" : "#27ae60")};
   }
 `;
-
 //style for all secondary cta button
 export const CTASecondaryButton = styled(CTAButton)`
   background-color: #28a745;
@@ -270,7 +274,6 @@ export const Artist_Genre_desc = styled.p`
   margin: 10px 25%;
   color: aliceblue;
 `;
-
 export const Artist_Content = styled.div`
   display: grid;
   grid-template-columns: 16% 16% 16% 16% 16%;
@@ -281,7 +284,6 @@ export const Artist_Content = styled.div`
   margin: 30px 7%;
   width: 100%;
 `;
-
 export const Genre_Content = styled.div`
   display: grid;
   grid-template-columns: 25% 25% 25%;
@@ -292,7 +294,6 @@ export const Genre_Content = styled.div`
   margin: 30px 10%;
   width: 100%;
 `;
-
 export const Artist_Genre_Button = styled.div`
   display: flex;
   align-items: center;
@@ -378,23 +379,278 @@ export const Register_Login_Formerror = styled.div`
   margin-top: 10px;
   font-weight: bold;
   font-size: 0.9rem;
+  text-align: center;
 `;
 
 //style for card lists in list page and others
-export const cardList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 20px;
-  justify-items: center;
-  align-items: center;
-  padding: 20px;
+export const CardList = styled.div``;
+export const ListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+export const ListContent = styled.div`
+  background-color: #f5f5dc;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(210, 210, 210, 0.47);
+  padding: 2%;
+  margin: 2%;
+`;
+export const AddSong = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 5%;
+`;
+export const AppBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1% 2%;
+  margin: 0px 2%;
+`;
+export const NavBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+`;
+export const WelcomeHeader = styled.h2`
+  margin: 0px;
+`;
+// export const Sidebar = styled.div`
+//   flex-basis: 20%;
+// `;
+// export const Maincontent = styled.div`
+//   flex-basis: 70%;
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+//   grid-gap: 20px;
+//   justify-items: center;
+//   align-items: center;
+//   padding: 20px;
+//   width: 100%;
+
+//   @media (max-width: 768px) {
+//     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+//   }
+
+//   @media (max-width: 480px) {
+//     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+//   }
+// `;
+
+//style for form modal for add and update songs
+export const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 100%;
+`;
+export const FormContent = styled.form`
+  background-color: lightblue;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.8);
+  box-shadow: 2px 4px 10px 1px rgba(210, 210, 210, 0.8);
+  padding: 3%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto auto;
+`;
+export const FormItem1 = styled.div`
+  grid-column: 1/-1;
+`;
+export const FormItem2 = styled.div`
+  grid-column: 1/-1;
+`;
+export const FormItem3 = styled.div`
+  grid-column: 1/2;
+`;
+export const FormItem4 = styled.div`
+  grid-column: 2/-1;
+`;
+export const FormItem5 = styled.div`
+  grid-column: 1/2;
+`;
+export const FormItem6 = styled.div`
+  grid-column: 2/-1;
+`;
+export const FormItem7 = styled.div`
+  grid-column: 1/-1;
+`;
+export const FormItem8 = styled.div`
+  grid-column: 1/-1;
+`;
+export const FormButton = styled.button`
+  background-color: #003366;
+  padding: 2% 7%;
+  font-weight: bold;
+  color: #f5f5dc;
+  margin: 0px 15px;
+`;
+export const FormLabel = styled.label`
+  font-weight: bold;
+  font-size: large;
+  display: block;
+  color: #003366;
+`;
+export const FormInput = styled.input`
+  width: 100%;
+  height: 5vh;
+  text-align: center;
+  margin-top: 3%;
+`;
+export const StyledDatePicker = styled(DatePicker)`
+  width: 100%;
+  padding: 5px 6px 10px 0px;
+  margin-top: 3%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+`;
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
+//style for modal
+export const ModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+`;
+export const ModalContent = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 50px;
+  z-index: 1000;
+  height: 80%;
+  width: fit-content;
+  overflow-y: scroll;
+`;
+export const CloseButton = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f00;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 0;
+`;
+export const DeleteContainer = styled.div`
+  margin-top: 20%;
+`;
+export const DeleteQuestion = styled.p`
+  font-weight: bolder;
+  font-size: 24px;
+  color: #f00;
+`;
+export const DeleteButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: center;
+`;
 
-  @media (max-width: 480px) {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
+//Style for table
+export const Action = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 15px;
+`;
+export const TableTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+export const TableImage = styled.img`
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  margin-right: 8px;
+`;
+export const EditBtn = styled.button`
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: darkblue;
+  border: 1px dotted rgba(0, 0, 139, 0.597);
+  cursor: pointer;
+`;
+export const DeleteBtn = styled.button`
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: crimson;
+  border: 1px dotted rgba(220, 20, 60, 0.6);
+  cursor: pointer;
+`;
+
+//style for spinner
+const dot1Move = keyframes`
+  20% { transform: scale(1); }
+  45% { transform: translate(16px, 12px) scale(0.45); }
+  60% { transform: translate(80px, 60px) scale(0.45); }
+  80% { transform: translate(80px, 60px) scale(0.45); }
+  100% { transform: translateY(0px) scale(1); }
+`;
+const dot2Move = keyframes`
+  20% { transform: scale(1); }
+  45% { transform: translate(-16px, 12px) scale(0.45); }
+  60% { transform: translate(-80px, 60px) scale(0.45); }
+  80% { transform: translate(-80px, 60px) scale(0.45); }
+  100% { transform: translateY(0px) scale(1); }
+`;
+const dot3Move = keyframes`
+  20% { transform: scale(1); }
+  45% { transform: translateY(-18px) scale(0.45); }
+  60% { transform: translateY(-90px) scale(0.45); }
+  80% { transform: translateY(-90px) scale(0.45); }
+  100% { transform: translateY(0px) scale(1); }
+`;
+const rotateMove = keyframes`
+  55% { transform: translate(-50%, -50%) rotate(0deg); }
+  80% { transform: translate(-50%, -50%) rotate(360deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+`;
+const index = keyframes`
+  0%, 100% { z-index: 3; }
+  33.3% { z-index: 2; }
+  66.6% { z-index: 1; }
+`;
+export const SpinnerContainer = styled.div`
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  filter: url("#goo");
+  animation: ${rotateMove} 2s ease-in-out infinite;
+`;
+export const SpinnerSvg = styled.svg``;
+export const Dot = styled.div`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+`;
+export const Dot1 = styled(Dot)`
+  background-color: #ffc400;
+  animation: ${dot1Move} 2s ease infinite, ${index} 6s -2s ease infinite;
+`;
+export const Dot2 = styled(Dot)`
+  background-color: #0051ff;
+  animation: ${dot2Move} 2s ease infinite, ${index} 6s -4s ease infinite;
+`;
+export const Dot3 = styled(Dot)`
+  background-color: #ff1717;
+  animation: ${dot3Move} 2s ease infinite, ${index} 6s ease infinite;
 `;

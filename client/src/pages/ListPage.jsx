@@ -1,31 +1,77 @@
 import { useEffect, useState } from "react";
-import CardItem from "../components/CardItem";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Form from "../components/Form";
+import Modal from "../components/Modal";
+import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
+import {
+  CTAButton,
+  ListContainer,
+  ListContent,
+  AddSong,
+  AppBar,
+  NavBar,
+  WelcomeHeader,
+} from "../styles";
+import { useDispatch, useSelector } from "react-redux";
+import { addSongsRequest } from "../redux/songRedux/songSlice";
+import Table from "../components/Table";
 
 const ListPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
+  const userId = localStorage.getItem("userId");
+  const name = localStorage.getItem("name");
+  const User = {
+    User: userId,
+  };
+  const { songs, loading, error } = useSelector((state) => state.songs);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-    } else {
+    if (!userId) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [dispatch, navigate, userId]);
+
+  const handleAdd = (song) => {
+    dispatch(addSongsRequest(song));
+    setRefresh((prev) => !prev);
+    closeModal();
+  };
+
   return (
-    <div>
+    <ListContainer>
       <Header />
-      {/* <CardItem
-        coverImage="https://res.cloudinary.com/dlzndjevg/image/upload/f_auto,q_auto/v1/SongManger/CoverImg/uuqsvilr057bgr89tjqb?_a=BAMAH2ZU0"
-        title="Shape of You"
-        artist="Ed Sheeran"
-        album="Divide"
-        genre="Pop"
-        releaseDate="2017-01-06"
-        duration="2:33"
-      /> */}
-    </div>
+      <AppBar>
+        <NavBar>
+          <WelcomeHeader>Welcome {name}</WelcomeHeader>
+          <p>
+            This is your list of songs, you can create a new song or update or
+            delete an existing song.
+          </p>
+          <div className="choice"></div>
+        </NavBar>
+        <AddSong>
+          <CTAButton className="add" onClick={openModal}>
+            Add new transaction
+          </CTAButton>
+          <Modal open={isOpen} onClose={closeModal}>
+            <Form onSave={handleAdd} />
+          </Modal>
+        </AddSong>
+      </AppBar>
+      <ListContent>
+        <Table refresh={refresh} />
+      </ListContent>
+      <Footer />
+    </ListContainer>
   );
 };
 

@@ -1,6 +1,10 @@
-import { uploadImageCDN } from "../contentDeliveryNetwork.js";
+import {
+  uploadImageCDN,
+  deleteImageCDN,
+  updaterImageCDN,
+  extractPublicId,
+} from "../contentDeliveryNetwork.js";
 import { Song } from "../models/songModels.js";
-//cdn controllers
 
 export const addSong = async (request, response) => {
   try {
@@ -24,6 +28,16 @@ export const addSong = async (request, response) => {
     const optimizedImg = await uploadImageCDN(coverImages);
     const coverImage = optimizedImg.optimizeImgUrl;
 
+    console.log({
+      User,
+      title,
+      artist,
+      album,
+      genre,
+      releaseDate,
+      duration,
+      coverImage,
+    });
     const newSong = {
       User,
       title,
@@ -34,6 +48,7 @@ export const addSong = async (request, response) => {
       duration,
       coverImage,
     };
+
     const song = await Song.create(newSong);
 
     if (!song) {
@@ -42,7 +57,10 @@ export const addSong = async (request, response) => {
       throw err;
     }
 
-    return response.status(201).send({ message: "Song added successfully!" });
+    return response.status(201).send({
+      message: "Song added successfully!",
+      newSong: song,
+    });
   } catch (error) {
     if (error.name === "CustomError") {
       response.status(400).send({ message: error.message });
@@ -131,8 +149,36 @@ export const updateSong = async (req, res) => {
       genre,
       releaseDate,
       duration,
-      coverImage,
+      coverImages,
     } = req.body;
+
+    const existingSong = await Song.findById(songId);
+    let coverImage;
+
+    if (!existingSong) {
+      return res.status(404).json({ message: "Song not found" });
+    } else {
+      if (existingSong.coverImage === coverImages) {
+        coverImage = coverImages;
+      } else {
+        const optimizedImg = await updaterImageCDN(
+          existingSong.coverImage,
+          coverImages
+        );
+        coverImage = optimizedImg.optimizeImgUrl;
+      }
+    }
+
+    console.log({
+      User,
+      title,
+      artist,
+      album,
+      genre,
+      releaseDate,
+      duration,
+      coverImage,
+    });
 
     const updatedSong = await Song.findByIdAndUpdate(
       songId,
@@ -156,18 +202,26 @@ export const deleteSong = async (req, res) => {
     const { songId } = req.body;
 
     if (!songId) {
-      return res.status(400).send({ message: "Did not recieve songId!" });
+      return res.status(400).send({ message: "Did not receive songId!" });
     }
 
-    const song = await Song.deleteOne({ _id: songId });
+    const existingSong = await Song.findById(songId);
 
-    if (!song) {
-      return res.status(404).send({
-        message: "No songs Yet",
-      });
+    if (!existingSong) {
+      return res.status(404).json({ message: "Song not found" });
     }
 
-    return res.status(200).json(song);
+    const publicId = await extractPublicId(existingSong.coverImage);
+
+    await deleteImageCDN(publicId);
+
+    const deleteResult = await Song.deleteOne({ _id: songId });
+
+    if (deleteResult.deletedCount === 0) {
+      return res.status(404).send({ message: "No song was deleted" });
+    }
+
+    return res.status(200).json({ songId: songId });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: error.message });

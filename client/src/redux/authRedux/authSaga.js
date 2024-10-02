@@ -16,10 +16,8 @@ function* handleRegister(action) {
     console.log("Register action received", action.payload);
     const apiAddUserUrl = import.meta.env.VITE_API_ADD_USER;
     const response = yield call(axios.post, apiAddUserUrl, action.payload);
-    console.log("API response", response);
     yield put(registerSuccess(response.data));
   } catch (error) {
-    console.log("API Error:", error);
     yield put(
       registerFail(error.response?.data?.message || "An error occurred.")
     );
