@@ -13,6 +13,7 @@ import {
   FormItem8,
   FormLabel,
   FormInput,
+  FormSelect,
   Register_Login_Formerror,
   FormButton,
   StyledDatePicker,
@@ -103,6 +104,7 @@ const Form = ({ initialData, onSave }) => {
             type="text"
             name="title"
             id="title"
+            required
             value={input.title}
             onChange={handleChange}
           />
@@ -114,6 +116,7 @@ const Form = ({ initialData, onSave }) => {
             type="text"
             name="artist"
             id="artist"
+            required
             value={input.artist}
             onChange={handleChange}
           />
@@ -125,6 +128,7 @@ const Form = ({ initialData, onSave }) => {
             type="text"
             name="album"
             id="album"
+            required
             value={input.album}
             onChange={handleChange}
           />
@@ -132,13 +136,24 @@ const Form = ({ initialData, onSave }) => {
 
         <FormItem4>
           <FormLabel htmlFor="genre">GENRE:</FormLabel>
-          <FormInput
-            type="text"
+          <FormSelect
             name="genre"
             id="genre"
+            required
             value={input.genre}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select Genre</option>
+            <option value="Rock">Rock</option>
+            <option value="Pop">Pop</option>
+            <option value="R&B">R&B</option>
+            <option value="Classical">Classical</option>
+            <option value="Hiphop">Hip Hop</option>
+            <option value="Reggae">Reggae</option>
+            <option value="Country">Country</option>
+            <option value="Disco">Disco</option>
+            <option value="Other">Other</option>
+          </FormSelect>
         </FormItem4>
 
         <FormItem5>
@@ -151,15 +166,18 @@ const Form = ({ initialData, onSave }) => {
             isClearable
             showYearDropdown
             scrollableMonthYearDropdown
+            required
           />
         </FormItem5>
 
         <FormItem6>
-          <FormLabel htmlFor="duration">DURATION:</FormLabel>
+          <FormLabel htmlFor="duration">DURATION(SECONDS):</FormLabel>
           <FormInput
             type="number"
             name="duration"
             id="duration"
+            min="0"
+            required
             value={input.duration}
             onChange={handleChange}
           />
@@ -169,6 +187,7 @@ const Form = ({ initialData, onSave }) => {
           <FormLabel htmlFor="coverImages">IMAGE:</FormLabel>
           <FormInput
             type="file"
+            required={!coverImages}
             accept="image/*"
             multiple={false}
             onChange={handleImageChange}
@@ -187,20 +206,24 @@ const Form = ({ initialData, onSave }) => {
 
         <FormItem8>
           <FormButton type="submit">
-            {initialData ? "Update Transaction" : "Add Transaction"}
+            {initialData ? "Update Song" : "Add Song"}
           </FormButton>
           <FormButton
             type="reset"
-            onClick={() =>
+            onClick={() => {
+              setCoverImage("");
               setInput({
+                songId: initialData ? initialData.id : "",
                 User: userId,
                 title: "",
                 artist: "",
+                album: "",
                 genre: "",
                 duration: "",
+                releaseDate: null,
                 coverImages: "",
-              })
-            }
+              });
+            }}
           >
             Clear
           </FormButton>

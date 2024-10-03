@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Form from "../components/Form";
 import Modal from "../components/Modal";
-import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
 import {
   CTAButton,
@@ -60,7 +59,7 @@ const ListPage = () => {
         </NavBar>
         <AddSong>
           <CTAButton className="add" onClick={openModal}>
-            Add new transaction
+            Add new song
           </CTAButton>
           <Modal open={isOpen} onClose={closeModal}>
             <Form onSave={handleAdd} />

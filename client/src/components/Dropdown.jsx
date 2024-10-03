@@ -9,6 +9,7 @@ import {
   DropdownIcon,
 } from "../styles";
 import { logoutStart } from "../redux/authRedux/authSlice";
+import { toast } from "react-toastify";
 
 const Dropdown = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Dropdown = () => {
 
   const handleLogout = () => {
     dispatch(logoutStart());
+    toast.success("You have successfully logged out");
     navigate("/login");
   };
 

@@ -3,6 +3,7 @@ import { space, flexbox } from "styled-system";
 import { keyframes } from "@emotion/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "react-router-dom";
 
 // this is style for card and cardItem
 export const CardItemContainer = styled.div`
@@ -10,6 +11,14 @@ export const CardItemContainer = styled.div`
   flex-direction: column;
   background-color: #f9f9f9;
   height: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
 `;
 export const CardContainer = styled.div`
   width: 100%;
@@ -23,6 +32,11 @@ export const CardContainer = styled.div`
   &:hover {
     transform: scale(1.04) rotate(-1deg);
   }
+`;
+export const CardLink = styled(Link)`
+  text-decoration: none;
+  height: 100%;
+  color: inherit;
 `;
 export const CardName = styled.div`
   font-weight: bolder;
@@ -268,11 +282,13 @@ export const Artist_Genre_Container = styled.div`
 export const Artist_Genre_title = styled.h2`
   text-align: center;
   color: aliceblue;
+  font-size: xx-large;
 `;
 export const Artist_Genre_desc = styled.p`
   text-align: center;
   margin: 10px 25%;
   color: aliceblue;
+  font-size: large;
 `;
 export const Artist_Content = styled.div`
   display: grid;
@@ -408,6 +424,17 @@ export const AppBar = styled.div`
   padding: 1% 2%;
   margin: 0px 2%;
 `;
+export const FilterSong = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1% 2%;
+  margin: 0px 2%;
+`;
+export const Artist_Genre_Filter = styled.select`
+  padding: 1% 2%;
+  margin: 0px 2%;
+`;
 export const NavBar = styled.div`
   display: flex;
   flex-direction: column;
@@ -416,27 +443,68 @@ export const NavBar = styled.div`
 export const WelcomeHeader = styled.h2`
   margin: 0px;
 `;
-// export const Sidebar = styled.div`
-//   flex-basis: 20%;
-// `;
-// export const Maincontent = styled.div`
-//   flex-basis: 70%;
-//   display: grid;
-//   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-//   grid-gap: 20px;
-//   justify-items: center;
-//   align-items: center;
-//   padding: 20px;
-//   width: 100%;
 
-//   @media (max-width: 768px) {
-//     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-//   }
+//style for about us page
+export const AboutContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+export const AboutContent = styled.div`
+  background-image: url("../../songGenre.jpg");
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+export const AboutCard = styled.div`
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 2px 4px 15px rgba(0, 0, 0, 0.5);
+  padding: 3%;
+  margin: 20px;
+  max-width: 800px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+`;
+export const AboutPara = styled.p`
+  margin: 0 5%;
+  color: #f5f5f5;
+  font-size: 1.125rem; /* Equivalent to 18px */
+  line-height: 1.8;
+  text-align: center;
 
-//   @media (max-width: 480px) {
-//     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-//   }
-// `;
+  @media (max-width: 768px) {
+    font-size: 1rem; /* Adjust for smaller screens */
+  }
+`;
+export const AboutUL = styled.ul`
+  list-style-type: none;
+  padding: 20px;
+  margin: 0;
+`;
+export const AboutList = styled.li`
+  margin-bottom: 15px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #ccc;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 10px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #121212;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px; /* Adjust font size for smaller screens */
+  }
+`;
 
 //style for form modal for add and update songs
 export const FormContainer = styled.div`
@@ -496,6 +564,12 @@ export const FormInput = styled.input`
   height: 5vh;
   text-align: center;
   margin-top: 3%;
+`;
+export const FormSelect = styled.select`
+  width: 100%;
+  text-align: center;
+  margin-top: 3%;
+  padding: 5%;
 `;
 export const StyledDatePicker = styled(DatePicker)`
   width: 100%;
@@ -618,6 +692,15 @@ const index = keyframes`
   0%, 100% { z-index: 3; }
   33.3% { z-index: 2; }
   66.6% { z-index: 1; }
+`;
+export const SpinnerBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
 `;
 export const SpinnerContainer = styled.div`
   width: 200px;

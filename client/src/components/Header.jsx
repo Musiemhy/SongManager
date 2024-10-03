@@ -6,6 +6,7 @@ import {
   OtherPages,
   StyledLink,
   LoginButton,
+  WelcomeHeader,
 } from "../styles";
 
 const Header = () => {
@@ -16,20 +17,12 @@ const Header = () => {
   };
 
   return (
-    <HeaderContainer>
-      <OtherPages>
-        <StyledLink as={Link} to="/">
-          Home
-        </StyledLink>
-        <StyledLink as={Link} to="/about">
-          About
-        </StyledLink>
-        <StyledLink as={Link} to="/contact">
-          Contact
-        </StyledLink>
-      </OtherPages>
-      <div>
-        {localStorage.getItem("name") ? (
+    <div>
+      {localStorage.getItem("name") ? (
+        <HeaderContainer>
+          <OtherPages>
+            <WelcomeHeader>Song Manager</WelcomeHeader>
+          </OtherPages>
           <div className="profile">
             <LoginButton onClick={toggleClick}>
               {localStorage.getItem("name")}
@@ -41,13 +34,23 @@ const Header = () => {
               <Dropdown />
             </div>
           </div>
-        ) : (
+        </HeaderContainer>
+      ) : (
+        <HeaderContainer>
+          <OtherPages>
+            <StyledLink as={Link} to="/">
+              Home
+            </StyledLink>
+            <StyledLink as={Link} to="/about">
+              About
+            </StyledLink>
+          </OtherPages>
           <Link to="/login">
             <LoginButton>Login</LoginButton>
           </Link>
-        )}
-      </div>
-    </HeaderContainer>
+        </HeaderContainer>
+      )}
+    </div>
   );
 };
 

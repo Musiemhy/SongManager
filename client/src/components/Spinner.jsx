@@ -1,9 +1,17 @@
 import React from "react";
-import { SpinnerContainer, Dot, Dot1, Dot2, Dot3, SpinnerSvg } from "../styles";
+import {
+  SpinnerBackground,
+  SpinnerContainer,
+  Dot,
+  Dot1,
+  Dot2,
+  Dot3,
+  SpinnerSvg,
+} from "../styles";
 
 const Spinner = () => {
   return (
-    <div>
+    <SpinnerBackground>
       {/* From Uiverse.io by Sourcesketch */}
       <SpinnerContainer>
         <Dot as={Dot1} />
@@ -26,7 +34,7 @@ const Spinner = () => {
           </filter>
         </defs>
       </SpinnerSvg>
-    </div>
+    </SpinnerBackground>
   );
 };
 

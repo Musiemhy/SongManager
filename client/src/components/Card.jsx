@@ -1,12 +1,15 @@
 import React from "react";
-import { CardItemContainer, CardIcon, CardName } from "../styles";
+import { Link } from "react-router-dom";
+import { CardItemContainer, CardLink, CardIcon, CardName } from "../styles";
 
 const Card = ({ coverImage, title }) => {
   return (
-    <CardItemContainer>
-      <CardIcon src={coverImage} alt={title} />
-      <CardName>{title}</CardName>
-    </CardItemContainer>
+    <CardLink to="/login">
+      <CardItemContainer>
+        <CardIcon src={coverImage} alt={title} />
+        <CardName>{title}</CardName>
+      </CardItemContainer>
+    </CardLink>
   );
 };
 

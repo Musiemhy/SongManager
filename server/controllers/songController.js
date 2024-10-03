@@ -5,6 +5,7 @@ import {
   extractPublicId,
 } from "../contentDeliveryNetwork.js";
 import { Song } from "../models/songModels.js";
+import mongoose from "mongoose";
 
 export const addSong = async (request, response) => {
   try {
@@ -25,19 +26,21 @@ export const addSong = async (request, response) => {
       throw err;
     }
 
-    const optimizedImg = await uploadImageCDN(coverImages);
-    const coverImage = optimizedImg.optimizeImgUrl;
-
-    console.log({
-      User,
+    const existingSong = await Song.findOne({
       title,
       artist,
       album,
-      genre,
-      releaseDate,
-      duration,
-      coverImage,
     });
+
+    if (existingSong) {
+      return response
+        .status(400)
+        .json({ message: "This song title already exists in the album." });
+    }
+
+    const optimizedImg = await uploadImageCDN(coverImages);
+    const coverImage = optimizedImg.optimizeImgUrl;
+
     const newSong = {
       User,
       title,
@@ -94,21 +97,24 @@ export const getSong = async (req, res) => {
 
 export const getSongByArtist = async (req, res) => {
   try {
-    const { User, artist } = req.body;
+    const { userId, artist } = req.body;
 
-    if (!User || !artist) {
+    if (!userId || !artist) {
       return res.status(400).send({ message: "Please select artist!" });
     }
 
-    const song = await Song.find({ User, artist });
+    const songs = await Song.find({
+      User: new mongoose.Types.ObjectId(userId),
+      artist,
+    });
 
-    if (!song) {
+    if (!songs || songs.length === 0) {
       return res
         .status(404)
-        .send({ message: "No song found for this artist!" });
+        .send({ message: "No songs found for this artist!" });
     }
 
-    return res.status(200).json(song);
+    return res.status(200).json(songs);
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: error.message });
@@ -117,13 +123,16 @@ export const getSongByArtist = async (req, res) => {
 
 export const getSongByGenre = async (req, res) => {
   try {
-    const { User, genre } = req.body;
+    const { userId, genre } = req.body;
 
-    if (!User || !genre) {
+    if (!userId || !genre) {
       return res.status(400).send({ message: "Please select genre!" });
     }
 
-    const songs = await Song.find({ User, genre });
+    const songs = await Song.find({
+      User: new mongoose.Types.ObjectId(userId),
+      genre,
+    });
 
     if (!songs || songs.length === 0) {
       return res
@@ -152,6 +161,18 @@ export const updateSong = async (req, res) => {
       coverImages,
     } = req.body;
 
+    const existingSongs = await Song.findOne({
+      title,
+      artist,
+      album,
+    });
+
+    if (existingSongs) {
+      return res
+        .status(400)
+        .json({ message: "This song title already exists in the album." });
+    }
+
     const existingSong = await Song.findById(songId);
     let coverImage;
 
@@ -168,17 +189,6 @@ export const updateSong = async (req, res) => {
         coverImage = optimizedImg.optimizeImgUrl;
       }
     }
-
-    console.log({
-      User,
-      title,
-      artist,
-      album,
-      genre,
-      releaseDate,
-      duration,
-      coverImage,
-    });
 
     const updatedSong = await Song.findByIdAndUpdate(
       songId,

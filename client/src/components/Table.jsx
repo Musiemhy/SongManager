@@ -9,22 +9,40 @@ import {
   updateSongsRequest,
   deleteSongsRequest,
 } from "../redux/songRedux/songSlice";
-import Spinner from "../components/Spinner"; // Import Spinner
+import Spinner from "../components/Spinner";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Action,
   EditBtn,
   DeleteBtn,
   TableTitleContainer,
   TableImage,
-  Register_Login_Formerror,
   LoginButton,
   DeleteContainer,
   DeleteQuestion,
   DeleteButton,
 } from "../styles";
 
+const formatDuration = (seconds) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  let formattedTime = "";
+
+  if (hours > 0) {
+    formattedTime += `${hours}:`;
+  }
+
+  formattedTime += `${String(minutes).padStart(2, "0")}:${String(
+    remainingSeconds
+  ).padStart(2, "0")}`;
+
+  return formattedTime;
+};
+
 const columns = (handleEdit, handleDelete) => [
-  { field: "idNum", headerName: "ID", width: 70 },
+  { field: "idNum", headerName: "ID", width: 50 },
   {
     field: "title",
     headerName: "Title",
@@ -41,14 +59,15 @@ const columns = (handleEdit, handleDelete) => [
   { field: "genre", headerName: "Genre", width: 100 },
   {
     field: "duration",
-    headerName: "Duration",
+    headerName: "Duration(Sec)",
     type: "number",
-    width: 80,
+    width: 110,
+    renderCell: (params) => formatDuration(params.row.duration),
   },
   {
     field: "releaseDate",
     headerName: "Date",
-    width: 130,
+    width: 100,
   },
   {
     field: "action",
@@ -70,7 +89,7 @@ const Table = ({ refresh }) => {
     User: localStorage.getItem("userId"),
   };
   const dispatch = useDispatch();
-  const { list: songs, loading, error } = useSelector((state) => state.songs); // Access loading state
+  const { list: songs, loading, error } = useSelector((state) => state.songs);
   const [rows, setRows] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -135,16 +154,13 @@ const Table = ({ refresh }) => {
     };
 
     dispatch(deleteSongsRequest(SongId));
-
     closeModal();
   };
 
   return (
     <div className="table">
-      {loading ? ( // Check for loading state
-        <Spinner /> // Render Spinner while loading
-      ) : error ? (
-        <Register_Login_Formerror>{error}</Register_Login_Formerror>
+      {loading ? (
+        <Spinner />
       ) : (
         <DataGrid
           rows={rows}

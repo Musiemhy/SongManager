@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { registerStart, logout } from "../redux/authRedux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
@@ -39,6 +40,7 @@ const RegisterPage = () => {
   const toggleConfirmPasswordVisibility = () => {
     setConfirmPasswordVisibility(!confirmPasswordVisibility);
   };
+
   const handleChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
@@ -71,7 +73,7 @@ const RegisterPage = () => {
   const formSubmission = (e) => {
     e.preventDefault();
     if (!inputs.name || !inputs.password || !inputs.confirm_password) {
-      alert("Please fill in all fields.");
+      toast.error("Please fill in all fields.");
       return;
     }
 
@@ -92,7 +94,7 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (registered) {
-      alert("Registration successful! Redirecting to login...");
+      toast.success("Registration successfull!");
       navigate("/login");
     }
   }, [registered, navigate]);
@@ -105,7 +107,7 @@ const RegisterPage = () => {
 
   return (
     <Register_Login_Container>
-      <Register_Login_Image></Register_Login_Image>
+      <Register_Login_Image />
       <Register_Login_Data>
         <Register_Login_Links>
           <Link to="/login">

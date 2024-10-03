@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { loginStart, logout } from "../redux/authRedux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -40,7 +41,7 @@ const LoginPage = () => {
   const formSubmission = (e) => {
     e.preventDefault();
     if (!inputs.name || !inputs.password) {
-      alert("Please fill in both fields.");
+      toast.error("Please fill in both fields.");
       return;
     }
     dispatch(loginStart(inputs));
@@ -48,7 +49,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      alert("You have successfully logged in, being redirected to Dashboard!");
+      toast.success("You have successfully logged in!");
       navigate("/listpage");
     }
   }, [loggedIn, navigate]);
@@ -90,7 +91,6 @@ const LoginPage = () => {
                 value={inputs.name}
                 onChange={handleChange}
                 required
-                aria-describedby="nameHelp"
               />
             </div>
             <div>
@@ -112,7 +112,6 @@ const LoginPage = () => {
                 value={inputs.password}
                 onChange={handleChange}
                 required
-                aria-describedby="passwordHelp"
               />
             </div>
             <LoginButton type="submit" disabled={loading}>

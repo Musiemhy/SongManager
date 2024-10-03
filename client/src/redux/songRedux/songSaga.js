@@ -14,6 +14,7 @@ import {
   deleteSongsSuccess,
   deleteSongsFailure,
 } from "./songSlice";
+import { toast } from "react-toastify";
 
 function* fetchSongs(action) {
   try {
@@ -21,7 +22,9 @@ function* fetchSongs(action) {
     const response = yield call(axios.post, apiGetSongUrl, action.payload);
     yield put(fetchSongsSuccess(response.data));
   } catch (error) {
-    yield put(fetchSongsFailure(error.message));
+    const errorMessage = error.response?.data?.message || error.message;
+    yield put(fetchSongsFailure(errorMessage));
+    toast.error(`Error fetching songs: ${errorMessage}`);
   }
 }
 
@@ -29,12 +32,13 @@ function* addSongs(action) {
   try {
     const apiAddSongUrl = import.meta.env.VITE_API_ADD_SONG;
     const response = yield call(axios.post, apiAddSongUrl, action.payload);
-
     const newSong = response.data.newSong;
-
     yield put(addSongsSuccess(newSong));
+    toast.success("Song added successfully");
   } catch (error) {
-    yield put(addSongsFailure(error.message));
+    const errorMessage = error.response?.data?.message || error.message;
+    yield put(addSongsFailure(errorMessage));
+    toast.error(`Error adding song: ${errorMessage}`);
   }
 }
 
@@ -43,22 +47,26 @@ function* updateSongs(action) {
     const apiUpdateSongUrl = import.meta.env.VITE_API_UPDATE_SONG;
     const response = yield call(axios.put, apiUpdateSongUrl, action.payload);
     yield put(updateSongsSuccess(response.data));
+    toast.success("Song updated successfully");
   } catch (error) {
-    yield put(updateSongsFailure(error.message));
+    const errorMessage = error.response?.data?.message || error.message;
+    yield put(updateSongsFailure(errorMessage));
+    toast.error(`Error updating song: ${errorMessage}`);
   }
 }
 
 function* deleteSongs(action) {
   try {
     const apiDeleteSongUrl = import.meta.env.VITE_API_DELETE_SONG;
-
     const response = yield call(axios.delete, apiDeleteSongUrl, {
       data: action.payload,
     });
-
     yield put(deleteSongsSuccess(response.data));
+    toast.success("Song deleted successfully");
   } catch (error) {
-    yield put(deleteSongsFailure(error.message));
+    const errorMessage = error.response?.data?.message || error.message;
+    yield put(deleteSongsFailure(errorMessage));
+    toast.error(`Error deleting song: ${errorMessage}`);
   }
 }
 
